@@ -50,6 +50,9 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
+      env: {
+        API_BASE_URL: 'https://rickandmortyapi.com/graphql',
+      },
 
       // transpile: false,
       // publicPath: '/',
@@ -141,8 +144,8 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: 'Quasar App',
-        short_name: 'Quasar App',
+        name: 'Rick And Morty Challange',
+        short_name: 'Rick And Morty Challange',
         description: 'A Quasar Framework app',
         display: 'standalone',
         orientation: 'portrait',
