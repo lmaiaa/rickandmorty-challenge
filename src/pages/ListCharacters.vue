@@ -1,27 +1,47 @@
 <template>
   <q-page padding>
-    <div class="row justify-center">
-      <div class="col-6">
-        <q-input standout="bg-primary text-white" label="Search Character">
-          <template v-slot:append>
-            <q-icon name="search" v-model="searchCharacter" />
-          </template>
-        </q-input>
-        {{ searchCharacter }}
-      </div>
-    </div>
-    <div ref="cards-container" style="max-height: 70vh; overflow: auto">
-      <q-infinite-scroll
-        class="flex row flex-center wrap"
-        :scroll-target="cards - container"
+    <div class="q-pa-md">
+      <q-table
+        :loading="stateCharacter.loading"
+        grid
+        title="Characters List"
+        :rows="characters"
+        row-key="name"
+        :filter="searchCharacter"
+        hide-header
+        v-model:pagination="pagination"
+        hide-pagination
       >
-        <card-character
-          class="q-ma-md"
-          v-for="character in characters"
-          :key="character.id"
-          :character="character"
+        <template v-slot:top-right>
+          <q-input
+            standout="bg-primary text-white"
+            dense
+            debounce="300"
+            label="Search Character"
+            v-model="searchCharacter"
+          >
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </template>
+        <template v-slot:item="props">
+          <card-character
+            class="q-ma-md"
+            :key="props.row.id"
+            :character="props.row"
+          />
+        </template>
+      </q-table>
+      <div class="row justify-center q-mt-md">
+        <q-pagination
+          v-model="pagination.page"
+          color="grey-8"
+          :max="pagesNumber"
+          size="sm"
+          boundary-numbers
         />
-      </q-infinite-scroll>
+      </div>
     </div>
   </q-page>
 </template>
@@ -29,16 +49,46 @@
 <script lang="ts">
 import CardCharacter from 'src/components/CardCharacter.vue';
 import { useCharacter } from 'src/composables/use-character';
-import { computed, onMounted, ref } from '@vue/runtime-core';
+import { computed, onMounted, ref, watchEffect } from '@vue/runtime-core';
+
 export default {
   components: { CardCharacter },
   name: 'ListCharacters',
   setup() {
     const { state: stateCharacter, getCharacters } = useCharacter();
-    const characters = computed(() => stateCharacter.characters?.results);
+    const characters = computed(() => {
+      return stateCharacter.characters?.results;
+    });
     const searchCharacter = ref('');
+    const pagination = ref({
+      sortBy: 'desc',
+      descending: false,
+      page: 1,
+      rowsPerPage: 6,
+    });
+    const pagesNumber = computed(() =>
+      Math.ceil(
+        (characters.value ? characters.value.length : 0) /
+          pagination.value.rowsPerPage
+      )
+    );
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    watchEffect(async () => {
+      if (
+        pagination.value.page === pagesNumber.value &&
+        stateCharacter.characters
+      ) {
+        await getCharacters(stateCharacter.characters.info.next);
+      }
+    });
     onMounted(() => getCharacters());
-    return { characters, searchCharacter };
+    return {
+      characters,
+      searchCharacter,
+      pagination,
+      pagesNumber,
+      stateCharacter,
+    };
   },
 };
 </script>

@@ -2,7 +2,7 @@
   "name": "rickandmorty-challenge",
   "version": "0.0.1",
   "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "productName": "Rick and Morty Challenge",
   "author": "Luccas Maia <luccasmaia@poli.ufrj.br>",
   "private": true,
   "scripts": {

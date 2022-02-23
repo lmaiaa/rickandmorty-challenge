@@ -1,5 +1,5 @@
 <template>
-  <q-card class="card-character" flat bordered style="max-width: 500px">
+  <q-card class="card-character" flat bordered style="max-width: 450px">
     <q-card-section horizontal>
       <q-card-section class="q-pt-xs">
         <div class="text-overline">
@@ -20,9 +20,13 @@
     <q-separator />
 
     <q-card-actions>
-      <q-btn flat round icon="event" />
-      <q-btn flat> 7:30PM </q-btn>
-      <q-btn flat color="primary"> Reserve </q-btn>
+      <q-btn
+        flat
+        color="primary"
+        @click="$router.push(`/character/${character.id}`)"
+      >
+        More Info
+      </q-btn>
     </q-card-actions>
   </q-card>
 </template>

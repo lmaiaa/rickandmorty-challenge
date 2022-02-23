@@ -19,13 +19,7 @@ export const getCharactersApi = async (
           status
           species
           gender
-          image
-          episode{
-            name
-            air_date
-            episode
-          }
-          
+          image          
         }
         info{
           count

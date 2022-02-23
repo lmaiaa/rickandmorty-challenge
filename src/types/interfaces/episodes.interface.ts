@@ -1,5 +1,5 @@
 import { Character } from './characters.interface';
-import { MultipleResponse } from './general.interface';
+import { HTTPResponse, MultipleResponse } from './general.interface';
 
 export interface Episode {
   id: number;
@@ -11,3 +11,4 @@ export interface Episode {
 }
 
 export type Episodes = MultipleResponse<Episode>;
+export type EpisodeResponse = HTTPResponse<{ episode: Episode }>;

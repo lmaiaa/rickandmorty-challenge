@@ -3,9 +3,13 @@
     <q-header elevated>
       <q-toolbar>
         <q-avatar size="xl">
-          <img src="./../assets/rick-and-morty.png" />
+          <img
+            src="./../assets/rick-and-morty.png"
+            @click="$router.push('/')"
+          />
         </q-avatar>
         <q-toolbar-title> Rick and Morty </q-toolbar-title>
+        <breadcrumb />
       </q-toolbar>
     </q-header>
 
@@ -24,7 +28,9 @@
 </template>
 
 <script>
+import Breadcrumb from 'src/components/Breadcrumb.vue';
 export default {
+  components: { Breadcrumb },
   name: 'Main',
 };
 </script>
